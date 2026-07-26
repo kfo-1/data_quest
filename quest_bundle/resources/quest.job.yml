@@ -1,0 +1,11 @@
+resources:
+  jobs:
+    quest:
+      name: quest
+      tasks:
+        - task_key: Bureau_of_Labor_Statistics
+          notebook_task:
+            notebook_path: /Workspace/Users/kbf1984@hotmail.com/quests/data_quest/quest_bundle/src/BLS_Get_Data
+            source: WORKSPACE
+      queue:
+        enabled: true

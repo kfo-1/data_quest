@@ -1,0 +1,57 @@
+targets:
+  dev:
+    # For personal branch work - each developer gets isolated resources and schema
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Each developer uses their own schema (username)
+    # - Any job schedules and triggers are paused by default
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-d19b75b9-52f8.cloud.databricks.com
+    variables:
+      catalog: datasets
+      schema: ${workspace.current_user.short_name}
+    resources:
+      pipelines:
+        bls_load:
+          name: bls_load
+          catalog: ${var.catalog}
+          schema: ${var.schema}
+  
+  main:
+    # For main branch deployments - shared dev environment
+    # - No prefixes on resource names (production mode)
+    # - Uses shared 'dev' schema
+    mode: production
+    workspace:
+      host: https://dbc-d19b75b9-52f8.cloud.databricks.com
+      root_path: /Workspace/Users/kbf1984@hotmail.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: datasets
+      schema: stage
+    resources:
+      pipelines:
+        bls_load:
+          name: bls_load
+          catalog: ${var.catalog}
+          schema: ${var.schema}
+  
+  prod:
+    # Production environment
+    mode: production
+    workspace:
+      host: https://dbc-d19b75b9-52f8.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/kbf1984@hotmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/kbf1984@hotmail.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: datasets
+      schema: prod
+    resources:
+      pipelines:
+        bls_load:
+          name: bls_load
+          catalog: ${var.catalog}
+          schema: ${var.schema}
+    permissions:
+      - user_name: kbf1984@hotmail.com
+        level: CAN_MANAGE

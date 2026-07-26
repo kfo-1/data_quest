@@ -1,0 +1,11 @@
+resources:
+  pipelines:
+    bls_load:
+      name: bls_load
+      libraries:
+        - glob:
+            include: ../src/bls_load/transformations/**
+      serverless: true
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      root_path: ../src/bls_load
