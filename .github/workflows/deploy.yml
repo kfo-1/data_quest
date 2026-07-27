@@ -1,0 +1,55 @@
+name: Deploy Bundle
+
+on:
+  push:
+    branches:
+      - main
+      - releases/prod
+
+jobs:
+
+  deploy-main:
+    if: >
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main'
+
+    runs-on: ubuntu-latest
+    environment: test
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: databricks/setup-cli@main
+
+      - name: Validate
+        run: databricks bundle validate -t main
+
+      - name: Deploy
+        run: databricks bundle deploy -t main
+
+  deploy-prod:
+    if: >
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'releases/prod'
+
+    runs-on: ubuntu-latest
+    environment: production
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: databricks/setup-cli@releases/prod
+
+      - name: Validate
+        run: databricks bundle validate -t prod
+
+      - name: Deploy
+        run: databricks bundle deploy -t prod
