@@ -1,0 +1,26 @@
+# # Unity Catalog - Catalog Resource
+# # NOTE: This catalog likely already exists in your workspace.
+# # This resource definition allows DABs to manage it or ensure it exists.
+
+# resources:
+#   catalogs:
+#     datasets:
+#       name: ${var.catalog}
+#       comment: "Catalog for quest bundle data"
+#       # Uncomment to set storage location
+#       # storage_root: "s3://my-bucket/path/to/catalog"
+      
+#       # Catalog properties
+#       properties:
+#         managed_by: "dabs"
+#         project: "quest_bundle"
+
+#       # Unity Catalog grant
+#       grants:
+#         - principal: ${var.cicd_sp}
+#           privileges:
+#             - USE_CATALOG
+        
+#         - principal: kbf1984@hotmail.com
+#           privileges:
+#             - USE_CATALOG

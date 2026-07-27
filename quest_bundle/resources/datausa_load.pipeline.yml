@@ -1,0 +1,11 @@
+resources:
+  pipelines:
+    datausa_load:
+      name: ${var.prefix}datausa_load
+      libraries:
+        - glob:
+            include: ../src/datausa_load/transformations/**
+      serverless: true
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      root_path: ../src/datausa_load

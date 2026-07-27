@@ -1,7 +1,7 @@
 resources:
   pipelines:
     bls_load:
-      name: bls_load
+      name: ${var.prefix}bls_load
       libraries:
         - glob:
             include: ../src/bls_load/transformations/**

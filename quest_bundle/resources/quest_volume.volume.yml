@@ -1,0 +1,28 @@
+# Unity Catalog - Volume Resource
+# This creates a managed volume for storing files within the schema.
+# Volume path: /Volumes/{catalog}/{schema}/quest_data
+#
+# Usage in code:
+#   df = spark.read.csv("/Volumes/datasets/kbf1984/quest_data/myfile.csv")
+#   df.write.parquet("/Volumes/datasets/kbf1984/quest_data/output/")
+
+resources:
+  volumes:
+    quest_data:
+      name: quest_data
+      catalog_name: ${var.catalog}
+      schema_name: ${var.schema}
+      volume_type: MANAGED
+      comment: "Managed volume for quest bundle data files"
+
+      # Unity Catalog grant
+      grants:
+        - principal: ${var.cicd_sp}
+          privileges:
+            - READ_VOLUME
+            - WRITE_VOLUME
+        
+        - principal: kbf1984@hotmail.com
+          privileges:
+            - READ_VOLUME
+            - WRITE_VOLUME

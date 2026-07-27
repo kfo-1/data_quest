@@ -1,0 +1,37 @@
+# Unity Catalog - Schema Resource
+# This creates/manages the schema for each target:
+# - dev target: personal schemas (e.g., datasets.kbf1984)
+# - main target: datasets.stage
+# - prod target: datasets.prod
+
+resources:
+  schemas:
+    quest_schema:
+      name: ${var.schema}
+      catalog_name: ${var.catalog}
+      comment: "Schema for quest bundle pipeline data"
+      
+      # Schema properties
+      properties:
+        managed_by: "dabs"
+        project: "quest_bundle"
+
+      # Unity Catalog grant
+      grants:
+        - principal: ${var.cicd_sp}
+          privileges:
+            - USE_SCHEMA
+            - CREATE_TABLE
+            - CREATE_FUNCTION
+            - CREATE_VOLUME
+            - MODIFY
+            - SELECT
+        
+        - principal: kbf1984@hotmail.com
+          privileges:
+            - USE_SCHEMA
+            - CREATE_TABLE
+            - CREATE_FUNCTION
+            - CREATE_VOLUME
+            - MODIFY
+            - SELECT

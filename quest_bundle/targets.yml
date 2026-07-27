@@ -1,27 +1,40 @@
 targets:
   dev:
     # For personal branch work - each developer gets isolated resources and schema
-    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Deployed resources get prefixed with 'dev_username_'
     # - Each developer uses their own schema (username)
-    # - Any job schedules and triggers are paused by default
-    mode: development
+    mode: production
     default: true
     workspace:
       host: https://dbc-d19b75b9-52f8.cloud.databricks.com
+      root_path: /Workspace/Users/kbf1984@hotmail.com/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: datasets
       schema: ${workspace.current_user.short_name}
-    resources:
-      pipelines:
-        bls_load:
-          name: bls_load
-          catalog: ${var.catalog}
-          schema: ${var.schema}
+      prefix: dev_${workspace.current_user.short_name}_
+    # resources:
+    #   pipelines:
+    #     bls_load:
+    #       name: ${var.prefix}bls_load
+    #       catalog: ${var.catalog}
+    #       schema: ${var.schema}
+    #     datausa_load:
+    #       name: ${var.prefix}datausa_load
+    #       catalog: ${var.catalog}
+    #       schema: ${var.schema}
+      # jobs:
+      #   quest:
+      #     name: ${var.prefix}_quest
+      #     parameters:
+      #       - default: ${var.catalog}
+      #         name: catalog
+      #       - default: ${workspace.current_user.short_name}
+      #         name: schema
   
   main:
     # For main branch deployments - shared dev environment
-    # - No prefixes on resource names (production mode)
-    # - Uses shared 'dev' schema
+    # - Prefix for shared workspace on resources
+    # - Uses shared 'stage' schema
     mode: production
     workspace:
       host: https://dbc-d19b75b9-52f8.cloud.databricks.com
@@ -29,12 +42,28 @@ targets:
     variables:
       catalog: datasets
       schema: stage
-    resources:
-      pipelines:
-        bls_load:
-          name: bls_load
-          catalog: ${var.catalog}
-          schema: ${var.schema}
+      prefix: stage
+    # resources:
+    #   pipelines:
+    #     bls_load:
+    #       name: ${var.prefix}_bls_load
+    #       catalog: ${var.catalog}
+    #       schema: ${var.schema}
+    #     datausa_load:
+    #       name: ${var.prefix}_datausa_load
+    #       catalog: ${var.catalog}
+    #       schema: ${var.schema}
+    #   jobs:
+    #     quest:
+    #       name: ${var.prefix}_quest
+    #       parameters:
+    #         - default: ${var.catalog}
+    #           name: catalog
+    #         - default: ${var.schema}
+    #           name: schema
+    permissions:
+      - user_name: kbf1984@hotmail.com
+        level: CAN_MANAGE
   
   prod:
     # Production environment
@@ -46,12 +75,25 @@ targets:
     variables:
       catalog: datasets
       schema: prod
-    resources:
-      pipelines:
-        bls_load:
-          name: bls_load
-          catalog: ${var.catalog}
-          schema: ${var.schema}
+      prefix: ""
+    # resources:
+    #   pipelines:
+    #     bls_load:
+    #       name: bls_load
+    #       catalog: ${var.catalog}
+    #       schema: ${var.schema}
+    #     datausa_load:
+    #       name: ${var.prefix}_datausa_load
+    #       catalog: ${var.catalog}
+    #       schema: ${var.schema}
+    #   jobs:
+    #     quest:
+    #       name: quest
+    #       parameters:
+    #         - default: ${var.catalog}
+    #           name: catalog
+    #         - default: ${var.schema}
+    #           name: schema
     permissions:
       - user_name: kbf1984@hotmail.com
         level: CAN_MANAGE
