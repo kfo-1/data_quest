@@ -1,0 +1,25 @@
+# This is a Declarative Automation Bundle definition for quest_bundle.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: quest_bundle
+  uuid: 5e293478-c902-4c43-a27b-507a682d9a92
+  # engine: direct
+
+include:
+  - resources/*.yml
+  - targets.yml
+
+# Variable declarations. These variables are assigned in the dev/prod targets below.
+variables:
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+  prefix:
+    description: Prefix for resource names for all in the same workspace
+  cicd_sp:
+    description: Used for cicd promotion
+    default: 430e7c9a-2242-4906-866e-f0108a479b55
+
+
+# Targets -> moved to targets.yml file
