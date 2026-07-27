@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    data_usa:
+      name: ${var.prefix}Data_USA
+      tasks:
+        - task_key: Data_USA_API
+          notebook_task:
+            notebook_path: ${workspace.file_path}/src/Data_USA_API_Get_Data
+            source: WORKSPACE
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+        - task_key: Load_DataUSA
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.datausa_load.id}
+          depends_on:
+            - task_key: Data_USA_API
+      queue:
+        enabled: true
+      parameters:
+        - default: ${var.catalog}
+          name: catalog
+        - default: ${var.schema}
+          name: schema

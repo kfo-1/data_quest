@@ -1,4 +1,19 @@
 # Databricks notebook source
+# Parameters passed from the job
+# These should match the target's catalog and schema variables:
+#   dev:  catalog='datasets', schema=<username>
+#   main: catalog='datasets', schema='stage'
+#   prod: catalog='datasets', schema='prod'
+dbutils.widgets.text('catalog', 'datasets')
+dbutils.widgets.text('schema', 'default')
+
+catalog = dbutils.widgets.get('catalog')
+schema = dbutils.widgets.get('schema')
+
+print(f"Using catalog: {catalog}, schema: {schema}")
+
+# COMMAND ----------
+
 import requests
 from bs4 import BeautifulSoup
 from pathlib import Path
@@ -10,8 +25,8 @@ headers = {
 }
 
 # Directory to save the files
-output_dir = Path("/Volumes/datasets/default/bls/pr/")
-output_dir.mkdir(exist_ok=True)
+output_dir = Path(f"/Volumes/{catalog}/{schema}/quest_data/bls/pr/")
+output_dir.mkdir(parents=True, exist_ok=True)
 
 # Create a API request session
 session = requests.Session()

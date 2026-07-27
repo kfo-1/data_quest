@@ -12,24 +12,6 @@ targets:
       catalog: datasets
       schema: ${workspace.current_user.short_name}
       prefix: dev_${workspace.current_user.short_name}_
-    # resources:
-    #   pipelines:
-    #     bls_load:
-    #       name: ${var.prefix}bls_load
-    #       catalog: ${var.catalog}
-    #       schema: ${var.schema}
-    #     datausa_load:
-    #       name: ${var.prefix}datausa_load
-    #       catalog: ${var.catalog}
-    #       schema: ${var.schema}
-      # jobs:
-      #   quest:
-      #     name: ${var.prefix}_quest
-      #     parameters:
-      #       - default: ${var.catalog}
-      #         name: catalog
-      #       - default: ${workspace.current_user.short_name}
-      #         name: schema
   
   main:
     # For main branch deployments - shared dev environment
@@ -42,25 +24,7 @@ targets:
     variables:
       catalog: datasets
       schema: stage
-      prefix: stage
-    # resources:
-    #   pipelines:
-    #     bls_load:
-    #       name: ${var.prefix}_bls_load
-    #       catalog: ${var.catalog}
-    #       schema: ${var.schema}
-    #     datausa_load:
-    #       name: ${var.prefix}_datausa_load
-    #       catalog: ${var.catalog}
-    #       schema: ${var.schema}
-    #   jobs:
-    #     quest:
-    #       name: ${var.prefix}_quest
-    #       parameters:
-    #         - default: ${var.catalog}
-    #           name: catalog
-    #         - default: ${var.schema}
-    #           name: schema
+      prefix: stage_
     permissions:
       - user_name: kbf1984@hotmail.com
         level: CAN_MANAGE
@@ -76,24 +40,6 @@ targets:
       catalog: datasets
       schema: prod
       prefix: ""
-    # resources:
-    #   pipelines:
-    #     bls_load:
-    #       name: bls_load
-    #       catalog: ${var.catalog}
-    #       schema: ${var.schema}
-    #     datausa_load:
-    #       name: ${var.prefix}_datausa_load
-    #       catalog: ${var.catalog}
-    #       schema: ${var.schema}
-    #   jobs:
-    #     quest:
-    #       name: quest
-    #       parameters:
-    #         - default: ${var.catalog}
-    #           name: catalog
-    #         - default: ${var.schema}
-    #           name: schema
     permissions:
       - user_name: kbf1984@hotmail.com
         level: CAN_MANAGE

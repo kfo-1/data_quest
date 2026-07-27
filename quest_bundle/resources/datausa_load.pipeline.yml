@@ -9,3 +9,6 @@ resources:
       catalog: ${var.catalog}
       schema: ${var.schema}
       root_path: ../src/datausa_load
+      configuration:
+        source_catalog: ${var.catalog}
+        source_schema: ${var.schema}

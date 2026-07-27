@@ -1,18 +1,20 @@
 resources:
   jobs:
-    quest:
-      name: ${var.prefix}quest
+    bls:
+      name: ${var.prefix}Bureau_of_Labor_Statistics
       tasks:
         - task_key: Bureau_of_Labor_Statistics
           notebook_task:
-            notebook_path: /Workspace/Users/kbf1984@hotmail.com/quests/data_quest/quest_bundle/src/BLS_Get_Data
+            notebook_path: ${workspace.file_path}/src/BLS_Get_Data
             source: WORKSPACE
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
         - task_key: Load_Bureau_of_Labor_Statistics
           pipeline_task:
             pipeline_id: ${resources.pipelines.bls_load.id}
           depends_on:
             - task_key: Bureau_of_Labor_Statistics
-            
       queue:
         enabled: true
       parameters:
