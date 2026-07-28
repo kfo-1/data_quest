@@ -69,7 +69,7 @@ def pr_data_combined():
 
 # Step 2: Create target streaming table with explicit schema (enforced at silver)
 dp.create_streaming_table(
-    name="slv_pr_productivity_facts",
+    name="slv_pr_productivity",
     comment="Silver fact table - Deduplicated productivity observations with standard dates",
     schema="""
         series_id STRING,
@@ -95,7 +95,7 @@ dp.create_streaming_table(
 
 # Step 3: Auto CDC flow with deduplication on (series_id, year, period)
 dp.create_auto_cdc_flow(
-    target="slv_pr_productivity_facts",
+    target="slv_pr_productivity",
     source="pr_data_combined",
     keys=["series_id", "year", "period"],  # Composite key for deduplication
     sequence_by="load_timestamp",  # Latest load wins

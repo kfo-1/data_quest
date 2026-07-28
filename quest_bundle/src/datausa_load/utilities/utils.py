@@ -1,21 +1,7 @@
-from pyspark.sql.functions import udf
-from pyspark.sql.types import BooleanType
-import re
-
-@udf(returnType=BooleanType())
-def is_valid_email(email):
-    """
-    This function checks if the given email address has a valid format using regex.
-    Returns True if valid, False otherwise.
-    """
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    if email is None:
-        return False
-    return re.match(pattern, email) is not None
-
+from pyspark.sql import DataFrame
 from pyspark.sql.types import StructType, ArrayType, MapType, StructField
 
-def clean_column_names(df):
+def clean_column_names(df: DataFrame) -> DataFrame:
     """Recursively clean column names in DataFrame and nested StructTypes for Delta Lake compatibility."""
     def clean_name(name):
         return name.replace('\t', '').replace(' ', '_').strip('_').lower()

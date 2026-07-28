@@ -5,7 +5,7 @@ from pyspark.sql.functions import col, trim, when
     comment="Silver dimension - Period definitions (cleaned and standardized for gold layer)"
 )
 @dp.expect_or_fail("no_nulls_in_key", "period IS NOT NULL")
-def slv_pr_period_dim():
+def slv_pr_period():
     df = spark.read.table("brz_pr_period")
     
     # Standardize text fields - trim whitespace

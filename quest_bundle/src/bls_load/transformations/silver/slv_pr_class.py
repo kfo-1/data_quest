@@ -5,7 +5,7 @@ from pyspark.sql.functions import col, trim
     comment="Silver dimension - Employee groups (cleaned and standardized for gold layer)"
 )
 @dp.expect_or_fail("no_nulls_in_key", "class_code IS NOT NULL")
-def slv_pr_class_dim():
+def slv_pr_class():
     df = spark.read.table("brz_pr_class")
     
     # Standardize text fields - trim whitespace

@@ -5,7 +5,7 @@ from pyspark.sql.functions import col, substring
     comment="Silver dimension - Series metadata with parsed components and enriched descriptions"
 )
 @dp.expect_or_fail("valid_series_id", "series_id IS NOT NULL AND LENGTH(series_id) = 17")
-def slv_pr_series_dim():
+def slv_pr_series():
     # Read bronze series
     df = spark.read.table("brz_pr_series")
     
@@ -23,35 +23,35 @@ def slv_pr_series_dim():
     df = df.withColumn("end_year_int", col("end_year").cast("int"))
     
     # Enrich with dimension lookups
-    sector_dim = spark.read.table("slv_pr_sector_dim")
+    sector_dim = spark.read.table("slv_pr_sector")
     df = df.join(
         sector_dim.select("sector_code", col("sector_name").alias("sector_name_desc")), 
         df["sector_code_parsed"] == sector_dim["sector_code"], 
         "left"
     ).drop(sector_dim["sector_code"])
     
-    class_dim = spark.read.table("slv_pr_class_dim")
+    class_dim = spark.read.table("slv_pr_class")
     df = df.join(
         class_dim.select("class_code", col("class_text").alias("class_desc")), 
         df["class_code_parsed"] == class_dim["class_code"], 
         "left"
     ).drop(class_dim["class_code"])
     
-    measure_dim = spark.read.table("slv_pr_measure_dim")
+    measure_dim = spark.read.table("slv_pr_measure")
     df = df.join(
         measure_dim.select("measure_code", col("measure_text").alias("measure_desc")), 
         df["measure_code_parsed"] == measure_dim["measure_code"], 
         "left"
     ).drop(measure_dim["measure_code"])
     
-    duration_dim = spark.read.table("slv_pr_duration_dim")
+    duration_dim = spark.read.table("slv_pr_duration")
     df = df.join(
         duration_dim.select("duration_code", col("duration_text").alias("duration_desc")), 
         df["duration_code_parsed"] == duration_dim["duration_code"], 
         "left"
     ).drop(duration_dim["duration_code"])
     
-    seasonal_dim = spark.read.table("slv_pr_seasonal_dim")
+    seasonal_dim = spark.read.table("slv_pr_seasonal")
     df = df.join(
         seasonal_dim.select("seasonal_code", col("seasonal_text").alias("seasonal_desc")), 
         df["seasonal_code_parsed"] == seasonal_dim["seasonal_code"], 

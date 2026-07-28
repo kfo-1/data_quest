@@ -5,7 +5,7 @@ from pyspark.sql.functions import col, trim
     comment="Silver dimension - Productivity measures (cleaned and standardized for gold layer)"
 )
 @dp.expect_or_fail("no_nulls_in_key", "measure_code IS NOT NULL")
-def slv_pr_measure_dim():
+def slv_pr_measure():
     df = spark.read.table("brz_pr_measure")
     
     # Standardize text fields - trim whitespace
