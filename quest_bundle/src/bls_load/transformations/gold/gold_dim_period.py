@@ -15,6 +15,7 @@ from pyspark import pipelines as dp
         "pipelines.primaryKey": "period_sk"
     }
 )
+@dp.expect("period is not null", "period IS NOT NULL")
 def gold_dim_period():
     df = spark.read.table("slv_pr_period")
     return df

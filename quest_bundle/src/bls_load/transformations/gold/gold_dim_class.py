@@ -15,6 +15,7 @@ from pyspark import pipelines as dp
         "pipelines.primaryKey": "class_sk"
     }    
 )
+@dp.expect("class_code is not null", "class_code IS NOT NULL")
 def gold_dim_class():
     df = spark.read.table("slv_pr_class")
     return df

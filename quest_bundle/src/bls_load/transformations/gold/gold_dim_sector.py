@@ -15,6 +15,7 @@ from pyspark import pipelines as dp
         "pipelines.primaryKey": "sector_sk"
     }
 )
+@dp.expect("sector_code is not null", "sector_code IS NOT NULL")
 def gold_dim_sector():
     df = spark.read.table("slv_pr_sector")
     return df

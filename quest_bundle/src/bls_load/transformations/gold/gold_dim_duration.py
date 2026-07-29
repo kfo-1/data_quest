@@ -15,6 +15,7 @@ from pyspark import pipelines as dp
         "pipelines.primaryKey": "duration_sk"
     }
 )
+@dp.expect("duration_code is not null", "duration_code IS NOT NULL")
 def gold_dim_duration():
     df = spark.read.table("slv_pr_duration")
     return df

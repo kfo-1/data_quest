@@ -12,6 +12,7 @@ from pyspark import pipelines as dp
         "pipelines.primaryKey": "seasonal_sk"
     }
 )
+@dp.expect("seasonal_code is not null", "seasonal_code IS NOT NULL")
 def gold_dim_seasonal():
     df = spark.read.table("slv_pr_seasonal")
     return df

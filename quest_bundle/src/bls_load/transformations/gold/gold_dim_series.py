@@ -24,6 +24,7 @@ from pyspark.sql.functions import col, trim
         "pipelines.primaryKey": "series_sk"
     }
 )
+@dp.expect("series_id is not null", "series_id IS NOT NULL")
 def gold_dim_series():
     df = spark.read.table("slv_pr_series")
     return df.select(

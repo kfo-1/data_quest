@@ -15,6 +15,7 @@ from pyspark import pipelines as dp
         "pipelines.primaryKey": "measure_sk"
     }
 )
+@dp.expect("measure_code is not null", "measure_code IS NOT NULL")
 def gold_dim_measure():
     df = spark.read.table("slv_pr_measure")
     return df
