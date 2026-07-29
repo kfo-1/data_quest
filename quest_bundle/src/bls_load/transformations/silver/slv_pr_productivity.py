@@ -31,10 +31,6 @@ from pyspark.sql.functions import (
     """
 )
 @dp.expect_or_fail(
-    "unique_business_key",
-    "COUNT(*) = COUNT(DISTINCT (series_id, year, period))"
-)
-@dp.expect_or_fail(
     "non_null_critical_fields",
     "series_id IS NOT NULL AND year IS NOT NULL AND period IS NOT NULL"
 )

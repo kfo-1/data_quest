@@ -13,8 +13,8 @@ from pyspark import pipelines as dp
     }
 )
 @dp.expect(
-    "nation_sk_populated",
-    "nation_sk IS NOT NULL"
+    "nation_id_populated",
+    "nation_id IS NOT NULL"
 )
 def gold_dim_class():
     df = spark.read.table("slv_population_nation")
