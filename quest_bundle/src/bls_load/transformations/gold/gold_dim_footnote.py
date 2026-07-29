@@ -12,6 +12,7 @@ from pyspark import pipelines as dp
         "pipelines.primaryKey": "footnote_sk"
     }
 )
+@dp.expect("footnote_code is not null", "footnote_code IS NOT NULL")
 def gold_dim_footnote():
     df = spark.read.table("slv_pr_footnote")
     return df

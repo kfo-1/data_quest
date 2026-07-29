@@ -24,7 +24,7 @@ from pyspark.sql.functions import trim
 )
 @dp.expect(
     "all_dimension_keys_resolved",
-    "class_sk IS NOT NULL AND duration_sk IS NOT NULL AND footnote_sk IS NOT NULL AND measure_sk IS NOT NULL AND period_sk IS NOT NULL AND sector_sk IS NOT NULL"
+    "series_id IS NOT NULL AND class_sk IS NOT NULL AND duration_sk IS NOT NULL AND footnote_sk IS NOT NULL AND measure_sk IS NOT NULL AND period_sk IS NOT NULL AND sector_sk IS NOT NULL"
 )
 def gold_fact_productivity():
     """
