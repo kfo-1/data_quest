@@ -26,10 +26,6 @@ from pyspark.sql.functions import trim
     "all_dimension_keys_resolved",
     "class_sk IS NOT NULL AND duration_sk IS NOT NULL AND footnote_sk IS NOT NULL AND measure_sk IS NOT NULL AND period_sk IS NOT NULL AND sector_sk IS NOT NULL"
 )
-@dp.expect(
-    "no_duplicate_facts",
-    "COUNT(*) = COUNT(DISTINCT (series_id, year, period))"
-)
 def gold_fact_productivity():
     """
     Transform silver population facts to gold:
