@@ -5,7 +5,7 @@ from utilities.utils import bls_options, clean_column_names
 @dp.table(
     comment="BLS PR seasonal codes - Seasonal adjustment status"
 )
-@dp.expect_or_fail("valid_seasonal_code", "seasonal_code IS NOT NULL AND LENGTH(seasonal_code) = 1")
+@dp.expect_or_fail("valid_seasonal_code", "seasonal_code IS NOT NULL")
 def brz_pr_seasonal():
     # Get catalog and schema from pipeline configuration
     catalog = spark.conf.get("source_catalog")

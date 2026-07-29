@@ -5,6 +5,10 @@ from utilities.utils import clean_column_names
 @dp.table(
     comment="Bronze layer - Raw DataUSA population data from API responses (incremental with Auto Loader)"
 )
+@dp.expect(
+    "data_element_populated",
+    "data IS NOT NULL"
+)
 def brz_population_data():
     # Get catalog and schema from pipeline configuration
     catalog = spark.conf.get("source_catalog")

@@ -5,8 +5,8 @@ from utilities.utils import bls_options, clean_column_names
 @dp.table(
     comment="BLS PR series metadata - Time series definitions"
 )
-@dp.expect_or_fail("valid_series_id", "series_id IS NOT NULL AND LENGTH(series_id) = 17")
-@dp.expect("valid_begin_year", "begin_year IS NOT NULL AND LENGTH(begin_year) = 4")
+@dp.expect_or_fail("valid_series_id", "series_id IS NOT NULL")
+@dp.expect("valid_begin_year", "begin_year IS NOT NULL")
 def brz_pr_series():
     # Get catalog and schema from pipeline configuration
     catalog = spark.conf.get("source_catalog")

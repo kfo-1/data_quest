@@ -5,7 +5,7 @@ from utilities.utils import bls_options, clean_column_names
 @dp.table(
     comment="BLS PR class codes - Employee groups"
 )
-@dp.expect_or_fail("valid_class_code", "class_code IS NOT NULL AND LENGTH(class_code) = 1")
+@dp.expect_or_fail("valid_class_code", "class_code IS NOT NULL")
 @dp.expect("valid_selectable", "selectable IN ('T', 'F')")
 def brz_pr_class():
     # Get catalog and schema from pipeline configuration

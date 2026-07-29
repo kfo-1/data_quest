@@ -1,12 +1,10 @@
-from pyspark.sql.functions import udf
-from pyspark.sql.types import BooleanType
-import re
+from pyspark.sql import DataFrame
 
 # ============================================
 # General Utilities
 # ============================================
 
-def clean_column_names(df):
+def clean_column_names(df: DataFrame) -> DataFrame:
     """Clean column names by removing tabs and extra spaces to ensure Delta Lake compatibility."""
     for old_col in df.columns:
         new_col = old_col.replace('\t', '').replace(' ', '_').strip('_')

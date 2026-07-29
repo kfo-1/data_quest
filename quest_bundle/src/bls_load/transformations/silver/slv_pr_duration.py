@@ -2,11 +2,11 @@ from pyspark import pipelines as dp
 from pyspark.sql.functions import col, trim
 
 @dp.materialized_view(
-    comment="Silver dimension - Seasonal adjustment status (cleaned and standardized for gold layer)"
+    comment="Silver dimension - Duration types (cleaned and standardized for gold layer)"
 )
-@dp.expect_or_fail("no_nulls_in_key", "seasonal_code IS NOT NULL")
-def slv_pr_seasonal_dim():
-    df = spark.read.table("brz_pr_seasonal")
+@dp.expect_or_fail("no_nulls_in_key", "duration_code IS NOT NULL")
+def slv_pr_duration():
+    df = spark.read.table("brz_pr_duration")
     
     # Standardize text fields - trim whitespace
     for col_name in df.columns:
