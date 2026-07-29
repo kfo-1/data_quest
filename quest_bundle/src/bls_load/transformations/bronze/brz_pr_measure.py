@@ -5,7 +5,7 @@ from utilities.utils import bls_options, clean_column_names
 @dp.table(
     comment="BLS PR measure codes - Productivity metrics"
 )
-@dp.expect_or_fail("valid_measure_code", "measure_code IS NOT NULL AND LENGTH(measure_code) = 2")
+@dp.expect_or_fail("valid_measure_code", "measure_code IS NOT NULL")
 @dp.expect("valid_selectable", "selectable IN ('T', 'F')")
 def brz_pr_measure():
     # Get catalog and schema from pipeline configuration

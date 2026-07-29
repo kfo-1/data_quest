@@ -5,6 +5,10 @@ from pyspark.sql.types import StructType, StructField, ArrayType, StringType, Lo
 
 # Step 1: Temporary view with transformations
 @dp.temporary_view()
+@dp.expect(
+    "nation_id_populated",
+    "nation_id IS NOT NULL"
+)
 def population_nation_data_transformed():
     """
     Transform bronze population data:

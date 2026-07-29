@@ -1,13 +1,6 @@
 from pyspark import pipelines as dp
-from pyspark.sql.functions import col, lag
-from pyspark.sql.window import Window
 
-@dp.temporary_view()
-def gold_dim_measure_transformed():
-    df = spark.readStream.table("slv_pr_measure")
-    return df
-
-dp.create_streaming_table(
+@dp.table(
     name="gold_dim_measure",
     comment="Gold table - Measure dimension",
     schema="""
@@ -22,14 +15,6 @@ dp.create_streaming_table(
         "pipelines.primaryKey": "measure_sk"
     }
 )
-
-dp.create_auto_cdc_flow(
-    target="gold_dim_measure",
-    source="gold_dim_measure_transformed",
-    keys=["measure_code"],
-    sequence_by="measure_code",
-    stored_as_scd_type=1,
-    ignore_null_updates=False
-)
-
-
+def gold_dim_measure():
+    df = spark.read.table("slv_pr_measure")
+    return df

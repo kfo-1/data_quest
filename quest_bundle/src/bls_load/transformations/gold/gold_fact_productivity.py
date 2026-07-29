@@ -1,14 +1,41 @@
 from pyspark import pipelines as dp
-from pyspark.sql.functions import col, lag, trim
-from pyspark.sql.window import Window
+from pyspark.sql.functions import trim
 
-@dp.temporary_view()
-def gold_fact_productivity_transformed():
+@dp.table(
+    name="gold_fact_productivity",
+    comment="Gold table - Productivity",
+    schema="""
+        seasonal_code STRING COMMENT 'Indicator of the type of record.',
+        series_id STRING COMMENT 'Identifies the specific series.',
+        class_sk BIGINT COMMENT 'Class surrogate key (FK)',
+        duration_sk BIGINT COMMENT 'Duration surrogate key (FK)',
+        footnote_sk BIGINT COMMENT 'Footnote surrogate key (FK)',
+        measure_sk BIGINT COMMENT 'Measure surrogate key (FK)',
+        period_sk BIGINT COMMENT 'Period surrogate key (FK)',
+        sector_sk BIGINT COMMENT 'Sector surrogate key (FK)',
+        year INT COMMENT 'Year',
+        value DOUBLE COMMENT 'Value',
+        observation_date DATE COMMENT 'Date of observation',
+        observation_year INT COMMENT 'Year of observation',
+        observation_quarter INT COMMENT 'Quarter of observation',
+        observation_month INT COMMENT 'Month of observation',
+        is_annual_average BOOLEAN COMMENT 'Is annual average'
+    """
+)
+@dp.expect(
+    "all_dimension_keys_resolved",
+    "class_sk IS NOT NULL AND duration_sk IS NOT NULL AND footnote_sk IS NOT NULL AND measure_sk IS NOT NULL AND period_sk IS NOT NULL AND sector_sk IS NOT NULL"
+)
+@dp.expect(
+    "no_duplicate_facts",
+    "COUNT(*) = COUNT(DISTINCT (series_id, year, period))"
+)
+def gold_fact_productivity():
     """
     Transform silver population facts to gold:
     - Join with dimensions to get surrogate keys
     """
-    df = spark.readStream.table("slv_pr_productivity")
+    df = spark.read.table("slv_pr_productivity")
     
     # Stream-static join with dimensions to get surrogate key
     class_dim = spark.read.table("gold_dim_class").select("class_sk", "class_code")
@@ -31,33 +58,3 @@ def gold_fact_productivity_transformed():
 
     return df
 
-dp.create_streaming_table(
-    name="gold_fact_productivity",
-    comment="Gold table - Productivity",
-    schema="""
-        seasonal_code STRING COMMENT 'Indicator of the type of record.',
-        series_id STRING COMMENT 'Identifies the specific series.',
-        class_sk BIGINT COMMENT 'Class surrogate key (FK)',
-        duration_sk BIGINT COMMENT 'Duration surrogate key (FK)',
-        footnote_sk BIGINT COMMENT 'Footnote surrogate key (FK)',
-        measure_sk BIGINT COMMENT 'Measure surrogate key (FK)',
-        period_sk BIGINT COMMENT 'Period surrogate key (FK)',
-        sector_sk BIGINT COMMENT 'Sector surrogate key (FK)',
-        year INT COMMENT 'Year',
-        value DOUBLE COMMENT 'Value',
-        observation_date DATE COMMENT 'Date of observation',
-        observation_year INT COMMENT 'Year of observation',
-        observation_quarter INT COMMENT 'Quarter of observation',
-        observation_month INT COMMENT 'Month of observation',
-        is_annual_average BOOLEAN COMMENT 'Is annual average'
-    """
-)
-
-dp.create_auto_cdc_flow(
-    target="gold_fact_productivity",
-    source="gold_fact_productivity_transformed",
-    keys=["class_sk", "duration_sk", "footnote_sk", "measure_sk", "period_sk", "sector_sk", "year"],
-    sequence_by="year",
-    stored_as_scd_type=1,
-    ignore_null_updates=False
-)

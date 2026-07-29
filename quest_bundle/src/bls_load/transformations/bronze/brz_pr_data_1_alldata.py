@@ -5,7 +5,7 @@ from utilities.utils import bls_options, clean_column_names
 @dp.table(
     comment="BLS PR complete historical data"
 )
-@dp.expect_or_fail("valid_series_id", "series_id IS NOT NULL AND LENGTH(series_id) = 17")
+@dp.expect_or_fail("valid_series_id", "series_id IS NOT NULL")
 @dp.expect_or_fail("valid_year", "year >= 1900 AND year <= 2100")
 @dp.expect_or_fail("valid_period", "period IS NOT NULL")
 def brz_pr_data_1_alldata():

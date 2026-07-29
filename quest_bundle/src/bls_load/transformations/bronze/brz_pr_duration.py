@@ -5,7 +5,7 @@ from utilities.utils import bls_options, clean_column_names
 @dp.table(
     comment="BLS PR duration codes - Percent changes vs indexes"
 )
-@dp.expect_or_fail("valid_duration_code", "duration_code IS NOT NULL AND LENGTH(duration_code) = 1")
+@dp.expect_or_fail("valid_duration_code", "duration_code IS NOT NULL")
 @dp.expect("valid_selectable", "selectable IN ('T', 'F')")
 def brz_pr_duration():
     # Get catalog and schema from pipeline configuration

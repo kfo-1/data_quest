@@ -10,6 +10,10 @@ from pyspark.sql.window import Window
         "delta.constraints.gold_population_nation_fk": "nation_sk IS NOT NULL"
     }
 )
+@expect(
+    "duplicate_check",
+    "COUNT(*) = COUNT(DISTINCT (nation_sk, year))"
+)
 def gold_fact_population_transformed():
     """
     Transform silver population facts to gold:

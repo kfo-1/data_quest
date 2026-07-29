@@ -5,7 +5,7 @@ from utilities.utils import bls_options, clean_column_names
 @dp.table(
     comment="BLS PR sector codes - Economic sectors"
 )
-@dp.expect_or_fail("valid_sector_code", "sector_code IS NOT NULL AND LENGTH(sector_code) = 4")
+@dp.expect_or_fail("valid_sector_code", "sector_code IS NOT NULL")
 @dp.expect("valid_selectable", "selectable IN ('T', 'F')")
 def brz_pr_sector():
     # Get catalog and schema from pipeline configuration

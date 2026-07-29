@@ -1,13 +1,6 @@
 from pyspark import pipelines as dp
-from pyspark.sql.functions import col, lag
-from pyspark.sql.window import Window
 
-@dp.temporary_view()
-def gold_dim_sector_transformed():
-    df = spark.readStream.table("slv_pr_sector")
-    return df
-
-dp.create_streaming_table(
+@dp.table(
     name="gold_dim_sector",
     comment="Gold table - Sector dimension",
     schema="""
@@ -22,14 +15,9 @@ dp.create_streaming_table(
         "pipelines.primaryKey": "sector_sk"
     }
 )
+def gold_dim_sector():
+    df = spark.read.table("slv_pr_sector")
+    return df
 
-dp.create_auto_cdc_flow(
-    target="gold_dim_sector",
-    source="gold_dim_sector_transformed",
-    keys=["sector_code"],
-    sequence_by="sector_code",
-    stored_as_scd_type=1,
-    ignore_null_updates=False
-)
 
 
